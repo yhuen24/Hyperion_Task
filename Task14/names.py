@@ -1,6 +1,6 @@
 counter = 0
 
-# Creates an infinite loop that only breaks when user inputs "Stop"
+# Creates an infinite loop that only stop when user inputs "Stop"
 while True:
     name = input("Enter student name: ")
     # makes name lower case so that capitalization don't matter
