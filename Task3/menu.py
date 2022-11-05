@@ -1,0 +1,7 @@
+item1 = input("Enter item 1: ")
+item2 = input("Enter item 2: ")
+item3 = input("Enter item 3: ")
+print("Order confirmation! You have ordered: ")
+print(item1)
+print(item2)
+print(item3)
