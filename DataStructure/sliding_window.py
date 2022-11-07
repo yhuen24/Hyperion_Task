@@ -2,7 +2,7 @@
 import math
 
 
-def max_subarray(my_list, size):
+def max_subarray(my_list):
     max_result = -math.inf
     running_sum = 0
 
@@ -14,6 +14,6 @@ def max_subarray(my_list, size):
     return max_result
 
 
-custom_list = [1, 2, 3, 4, 5, 6, 7, 8]
+custom_list = [1, 2, 3, 4, 5, 6, 7, 12, 9]
 k = 3
-print(max_subarray(custom_list, k))
+print(max_subarray(custom_list))
