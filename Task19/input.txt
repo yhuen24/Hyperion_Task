@@ -1,0 +1,4 @@
+im inputting some text
+this text must contain multiples lines on it
+this is the third line in input.txt
+well this is the fourth line within it
