@@ -21,6 +21,3 @@ sorted_combined_num = sorted(combined_num)  # sort the combined num ascending or
 with open('all_numbers.txt', 'w+') as writer:
     for i in sorted_combined_num:
         writer.write(f"{str(i)} ")
-
-
-
