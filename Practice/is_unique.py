@@ -9,5 +9,6 @@ def check_is_unique(my_string):
             return "Your string has duplicate characters"
     return "Your string has all unique characters"
 
+
 input_string = input("Enter a string: ")
 print(check_is_unique(input_string))
