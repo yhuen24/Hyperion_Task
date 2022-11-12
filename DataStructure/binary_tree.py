@@ -1,30 +1,34 @@
-class Node:
+class BinaryTree:
     def __init__(self, data):
         self.right = None
         self.left = None
         self.data = data
 
-
-class BinaryTree:
-    def __init__(self):
-        self.root = None
-
     def add(self, data):
-        new_node = Node(data)
-        if self.root is None:
-            self.root = new_node
+        if self.data is None:
+            self.data = data
         else:
-            if data < new_node.data:
-                if new_node.left is None:
-                    new_node.left = Node(data)
+            if data < self.data:
+                if self.left is None:
+                    self.left = BinaryTree(data)
                 else:
-                    new_node.left.add(data)
+                    self.left.add(data)
             else:
-                if new_node.right is None:
-                    new_node.right = Node(data)
+                if self.right is None:
+                    self.right = BinaryTree(data)
                 else:
-                    new_node.right.add(data)
+                    self.right.add(data)
+
+    def print_tree(self):
+        if self.left:
+            self.left.print_tree()
+        print(self.data)
+        if self.right:
+            self.right.print_tree()
 
 
-tree = BinaryTree()
-
+tree = BinaryTree(10)
+tree.add(12)
+tree.add(124)
+tree.add(122)
+tree.print_tree()
