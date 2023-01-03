@@ -23,7 +23,7 @@ def window(arr):
         if arr[num] < max_seen:
             right = num
 
-    for num in range(size - 1, -1, -1):
+    for num in reversed(range(size)):
         min_seen = min(min_seen, arr[num])
         if arr[num] > min_seen:
             left = num
