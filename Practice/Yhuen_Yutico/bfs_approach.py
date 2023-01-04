@@ -2,8 +2,7 @@ from collections import deque
 
 # Solution
 def add_one(grid, start, n):
-    # Initialize a queue with the starting point
-    queue = deque([start])
+    que = deque([start])
 
     # Mark the starting point as visited
     visited = set([start])
@@ -12,14 +11,14 @@ def add_one(grid, start, n):
     steps = 0
 
     # Loop until the queue is empty
-    while queue:
+    while que:
         # Get the size of the queue
-        size = len(queue)
+        size = len(que)
 
         # Loop over all the points in the current level
         for _ in range(size):
             # Pop the first point from the queue
-            point = queue.popleft()
+            point = que.popleft()
 
             # Get the row and column of the point
             row, col = point
@@ -32,7 +31,7 @@ def add_one(grid, start, n):
                 # If the new point is within the grid and has not been visited
                 if (1 <= r <= len(grid)) and (1 <= c <= len(grid[0])) and ((r, c) not in visited):
                     # Add the new point to the queue and mark it as visited
-                    queue.append((r, c))
+                    que.append((r, c))
                     visited.add((r, c))
         steps += 1
         if steps > n:
