@@ -1,29 +1,55 @@
-def dfs(grid, moves, row, col, visited):
-    # check if the current position is out of bounds or if we have reached the maximum number of moves
-    if row < 0 or row >= len(grid) or col < 0 or col >= len(grid[0]) or moves < 0:
-        return
+from collections import deque
 
-    # check if position has been visited in the past
-    if (row, col) in visited:
-        return
-    # add (row, col) as tuple in visited set if is not visited in the past
-    grid[row][col] += 1
-    visited.add((row, col))
-    # goes up
-    dfs(grid, moves - 1, row + 1, col, visited)
-    # goes down
-    dfs(grid, moves - 1, row - 1, col, visited)
-    # goes right
-    dfs(grid, moves - 1, row, col + 1, visited)
-    # goes left
-    dfs(grid, moves - 1, row, col - 1, visited)
+# Solution
+def add_one(grid, start, n):
+    que = deque([start])
+
+    # Mark the starting point as visited
+    visited = set([start])
+
+    # Initialize the number of steps taken to 0
+    steps = 0
+
+    # Loop until the queue is empty
+    while que:
+        # Get the size of the queue
+        size = len(que)
+
+        # Loop over all the points in the current level
+        for _ in range(size):
+            # Pop the first point from the queue
+            point = que.popleft()
+
+            # Get the row and column of the point
+            row, col = point
+
+            # Add one to the grid at this point
+            grid[row - 1][col - 1] += 1
+
+            # Check all the possible next steps from this point
+            for r, c in ((row + 1, col), (row - 1, col), (row, col + 1), (row, col - 1)):
+                # If the new point is within the grid and has not been visited
+                if (1 <= r <= len(grid)) and (1 <= c <= len(grid[0])) and ((r, c) not in visited):
+                    # Add the new point to the queue and mark it as visited
+                    que.append((r, c))
+                    visited.add((r, c))
+        steps += 1
+        if steps > n:
+            break
 
 
-# test the function
-grid = [[0] * 5 for _ in range(5)]
-move_size = 3
-start = (3, 3)
-dfs(grid, move_size, start[0] - 1, start[1] - 1, visited=set())
+# Driver Code
+dimension, pizzeria_num = map(int, input().split())
+grid = [[0] * dimension for _ in range(dimension)]
+for _ in range(pizzeria_num):
+    row, col, moves = map(int, input().split())
+    start = (row, col)
+    add_one(grid, start, moves)
 
-for row in grid:
-    print(row)
+# finding position with the highest value in the grid
+result = 0
+for grid_row in grid:
+    result = max(result, max(grid_row))
+
+print(result)
+
