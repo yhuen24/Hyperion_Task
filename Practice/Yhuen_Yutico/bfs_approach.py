@@ -1,0 +1,52 @@
+from collections import deque
+
+
+def add_one(grid, start, n):
+    # Initialize a queue with the starting point
+    queue = deque([start])
+
+    # Mark the starting point as visited
+    visited = set([start])
+
+    # Initialize the number of steps taken to 0
+    steps = 0
+
+    # Loop until the queue is empty
+    while queue:
+        # Get the size of the queue
+        size = len(queue)
+
+        # Loop over all the points in the current level
+        for _ in range(size):
+            # Pop the first point from the queue
+            point = queue.popleft()
+
+            # Get the row and column of the point
+            row, col = point
+
+            # Add one to the grid at this point
+            grid[row - 1][col - 1] += 1
+
+            # Check all the possible next steps from this point
+            for r, c in ((row + 1, col), (row - 1, col), (row, col + 1), (row, col - 1)):
+                # If the new point is within the grid and has not been visited
+                if (1 <= r <= len(grid)) and (1 <= c <= len(grid[0])) and ((r, c) not in visited):
+                    # Add the new point to the queue and mark it as visited
+                    queue.append((r, c))
+                    visited.add((r, c))
+
+        # Increment the number of steps taken
+        steps += 1
+
+        # If the number of steps taken is greater than n, we are done
+        if steps > n:
+            break
+
+
+# Example usage
+grid = [[0, 0, 0, 0, 0] for _ in range(5)]
+n = 1
+start = (2, 3)
+add_one(grid, start, n)
+for row in grid:
+    print(row)

@@ -1,27 +1,29 @@
-# this function adds 1 to every block within the range of the coordinates (x, y)
-# block is within range if it can be reach within n number of steps
-def block_range(grid, x, y, steps):
-    # Convert coordinates from index-based 1 to index-based 0
-    x -= 1
-    y -= 1
+def dfs(grid, moves, row, col, visited):
+    # check if the current position is out of bounds or if we have reached the maximum number of moves
+    if row < 0 or row >= len(grid) or col < 0 or col >= len(grid[0]) or moves < 0:
+        return
 
-    # Add 1 to the specified location
-    grid[x][y] += 1
-
-    # Add 1 to all reachable locations
-    for i in range(1, steps + 1):
-        # Check if the coordinates are within the bounds of the grid
-        if x + i < len(grid):
-            grid[x + i][y] += 1
-        if x - i >= 0:
-            grid[x - i][y] += 1
-        if y + i < len(grid[0]):
-            grid[x][y + i] += 1
-        if y - i >= 0:
-            grid[x][y - i] += 1
+    # check if position has been visited in the past
+    if (row, col) in visited:
+        return
+    # add (row, col) as tuple in visited set if is not visited in the past
+    grid[row][col] += 1
+    visited.add((row, col))
+    # goes up
+    dfs(grid, moves - 1, row + 1, col, visited)
+    # goes down
+    dfs(grid, moves - 1, row - 1, col, visited)
+    # goes right
+    dfs(grid, moves - 1, row, col + 1, visited)
+    # goes left
+    dfs(grid, moves - 1, row, col - 1, visited)
 
 
-grid = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
-block_range(grid, 1, 1, 1)
+# test the function
+grid = [[0] * 5 for _ in range(5)]
+move_size = 3
+start = (3, 3)
+dfs(grid, move_size, start[0] - 1, start[1] - 1, visited=set())
+
 for row in grid:
     print(row)
