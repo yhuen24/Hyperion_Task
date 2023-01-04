@@ -1,6 +1,6 @@
 from collections import deque
 
-
+# Solution
 def add_one(grid, start, n):
     # Initialize a queue with the starting point
     queue = deque([start])
@@ -34,19 +34,23 @@ def add_one(grid, start, n):
                     # Add the new point to the queue and mark it as visited
                     queue.append((r, c))
                     visited.add((r, c))
-
-        # Increment the number of steps taken
         steps += 1
-
-        # If the number of steps taken is greater than n, we are done
         if steps > n:
             break
 
 
-# Example usage
-grid = [[0, 0, 0, 0, 0] for _ in range(5)]
-n = 1
-start = (2, 3)
-add_one(grid, start, n)
-for row in grid:
-    print(row)
+# Driver Code
+dimension, pizzeria_num = map(int, input().split())
+grid = [[0] * dimension for _ in range(dimension)]
+for _ in range(pizzeria_num):
+    row, col, moves = map(int, input().split())
+    start = (row, col)
+    add_one(grid, start, moves)
+
+# finding position with the highest value in the grid
+result = 0
+for grid_row in grid:
+    result = max(result, max(grid_row))
+
+print(result)
+
