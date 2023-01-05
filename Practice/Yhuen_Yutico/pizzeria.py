@@ -3,33 +3,28 @@ from collections import deque
 # Solution
 def add_one(grid, start, n):
     que = deque([start])
-
-    # Mark the starting point as visited
     visited = set([start])
-
-    # Initialize the number of steps taken to 0
     steps = 0
 
-    # Loop until the queue is empty
     while que:
-        # Get the size of the queue
         size = len(que)
 
-        # Loop over all the points in the current level
+        # Loop over all the position in the current level
         for _ in range(size):
-            # Pop the first point from the queue
-            point = que.popleft()
+            # Pop the first position from the queue
+            position = que.popleft()
 
-            # Get the row and column of the point
-            row, col = point
-
-            # Add one to the grid at this point
+            # Using Unpacking, get row and col of the position
+            row, col = position
             grid[row - 1][col - 1] += 1
 
-            # Check all the possible next steps from this point
-            for r, c in ((row + 1, col), (row - 1, col), (row, col + 1), (row, col - 1)):
-                # If the new point is within the grid and has not been visited
-                if (1 <= r <= len(grid)) and (1 <= c <= len(grid[0])) and ((r, c) not in visited):
+            # Listing all the possible steps (Up -> Down -> Left -> Right)
+            possible_step = ((row + 1, col), (row - 1, col), (row, col - 1), (row, col + 1))
+            # Check all the possible next steps
+            for r, c in possible_step:
+                # Check if r and c are within valid position meaning not out of bounds
+                valid_position = (1 <= r <= len(grid)) and (1 <= c <= len(grid[0]))
+                if valid_position and (r, c) not in visited:
                     # Add the new point to the queue and mark it as visited
                     que.append((r, c))
                     visited.add((r, c))
