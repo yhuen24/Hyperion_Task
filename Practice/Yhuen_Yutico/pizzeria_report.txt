@@ -1,0 +1,22 @@
+# My Thoughts on how to approach the pizzeria problem
+
+# - I understand that in order to solve this problem I need to simulate the distance reach of every pizzeria meaning the
+# grid will be filled with x's and 0's
+# - position on the grid with a number x means it is reachable by x times and 0 means it is not reachable by any pizzeria
+# - The distance reach can be solve using a Breadth First Search approach starting from the starting position and searching
+# in a (Up -> Down -> Left -> Right) pattern until certain number of moves
+# - This breadth first search approach will increment reachable every position
+# - After using the BFS on every starting point the grid will have some numbers x and 0 on it
+# - From the grid I just need to look for the position with the highest value then print that value
+
+# Complexity of my solution
+# Time Complexity is O(n), this can be broken down into:
+    # p = number of pizzeria
+    # q = size of queue
+    # m = number of moves
+    # specific time complexity should be O(p x q x m) which is still linear time meaning O(n)
+
+# Space Complexity is O(n) as Im creating a queue of size n and set of size n
+
+# This is the most optimal solution I can think of, I do not know any part on my code that needs improvement
+
