@@ -21,7 +21,7 @@ def add_one(grid, start, n):
             # Listing all the possible steps (Up -> Down -> Left -> Right)
             possible_step = ((row + 1, col), (row - 1, col), (row, col - 1), (row, col + 1))
             # Check all the possible next steps
-            for r, c in possible_step:
+            for r, c in possible_step: #
                 # Check if r and c are within valid position meaning not out of bounds
                 valid_position = (1 <= r <= len(grid)) and (1 <= c <= len(grid[0]))
                 if valid_position and (r, c) not in visited:
