@@ -5,12 +5,15 @@ def check_permutation(str1, str2):
     hashmap2 = {}
     if len(str1) != len(str2):
         return f"{str2} is not a permutation of {str1}"
-    else:
+    else:#
+        # frequency table  key ch : value = copy
         for ch in str1:  # populates hashmap 1
             if ch not in hashmap1:
                 hashmap1[ch] = 1
             else:
                 hashmap1[ch] += 1
+
+
 
         for ch in str2:  # populates hashmap 2
             if ch not in hashmap2:
