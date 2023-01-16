@@ -48,16 +48,16 @@ def solve_determinant(matrix):
 
 
 # returns the inverse version of the passed matrix
-def solve_inverse(matrix, determinant):
+def solve_inverse(adj_matrix, determinant):
     result = []
-    if len(matrix) == 2 and len(matrix[0]) == 2:
-        for row in matrix:
+    if len(adj_matrix) == 2 and len(adj_matrix[0]) == 2:
+        for row in adj_matrix:
             row_list = []
             for col in row:
                 row_list.append(round(col / determinant, 2))
             result.append(row_list)
     else:
-        for row in matrix:
+        for row in adj_matrix:
             row_list = []
             for col in row:
                 row_list.append(col * round(1 / determinant, 2))
@@ -67,9 +67,9 @@ def solve_inverse(matrix, determinant):
 
 # returns the transposed version of the passed matrix
 def solve_transpose(matrix):
-    new_row = len(matrix)
-    new_col = len(matrix[0])
-    matrix_transposed = [[0 for _ in range(new_row)] for _ in range(new_col)]
+    new_col = len(matrix)
+    new_row = len(matrix[0])
+    matrix_transposed = [[0 for _ in range(new_col)] for _ in range(new_row)]
     for i in range(new_row):
         for j in range(new_col):
             matrix_transposed[j][i] = matrix[i][j]
