@@ -37,9 +37,13 @@ def solve_determinant(matrix):
         g = matrix[2][0]
         h = matrix[2][1]
         i = matrix[2][2]
-        # up going down  -> down going up
+        # [a, b, c]
+        # [d, e, f]
+        # [g, h, i]
+        # from up going down  -> from down going up
         det = (a * e * i) + (b * f * g) + (c * d * h) - (c * e * g) - (b * d * i) - (a * f * h)
-
+        # Bottom - Top method
+        # det = ((a * e * i) + (b * f * g) + (c * d * h)) - ((c * e * g) + (b * d * i) + (a * f * h))
     return det
 
 
@@ -93,22 +97,23 @@ def solve_cofactor(minor, row_pos, col_pos):
 
 matrix = take_input()
 matrix_determinant = solve_determinant(matrix)
-matrix_adjugate = solve_adjugate(matrix)
-matrix_transpose = solve_transpose(matrix)
-matrix_cofactor = [[0 for _ in range(len(matrix[0]))] for _ in range(len(matrix))]
-for i in range(len(matrix)):
-    for j in range(len(matrix[0])):
-        matrix_minor = solve_minor(matrix, i, j)
-        matrix_cofactor[i][j] = solve_cofactor(matrix_minor, i, j)
-matrix_adjoint = solve_transpose(matrix_cofactor)
-print("The Adjoint of your matrix are:")
-for row in matrix_adjoint:
-    print(row)
-matrix_inverse = solve_inverse(matrix_adjoint, matrix_determinant)
 print(f"The determinant of your matrix is: {matrix_determinant}")
-print("The cofactor of your matrix are:")
-for row in matrix_cofactor:
-    print(row)
-print("The inverse of your matrix are:")
-for row in matrix_inverse:
-    print(row)
+# matrix_adjugate = solve_adjugate(matrix)
+# matrix_transpose = solve_transpose(matrix)
+# matrix_cofactor = [[0 for _ in range(len(matrix[0]))] for _ in range(len(matrix))]
+# for i in range(len(matrix)):
+#     for j in range(len(matrix[0])):
+#         matrix_minor = solve_minor(matrix, i, j)
+#         matrix_cofactor[i][j] = solve_cofactor(matrix_minor, i, j)
+# matrix_adjoint = solve_transpose(matrix_cofactor)
+# print("The Adjoint of your matrix are:")
+# for row in matrix_adjoint:
+#     print(row)
+# matrix_inverse = solve_inverse(matrix_adjoint, matrix_determinant)
+
+# print("The cofactor of your matrix are:")
+# for row in matrix_cofactor:
+#     print(row)
+# print("The inverse of your matrix are:")
+# for row in matrix_inverse:
+#     print(row)
