@@ -37,7 +37,7 @@ def solve_determinant(matrix):
         g = matrix[2][0]
         h = matrix[2][1]
         i = matrix[2][2]
-
+        # up going down  -> down going up
         det = (a * e * i) + (b * f * g) + (c * d * h) - (c * e * g) - (b * d * i) - (a * f * h)
 
     return det
@@ -59,7 +59,6 @@ def solve_inverse(matrix, determinant):
                 row_list.append(col * round(1 / determinant, 2))
             result.append(row_list)
     return result
-
 
 
 # returns the transposed version of the passed matrix
