@@ -97,7 +97,8 @@ def backtest(asset1, asset2, column):
     cumulative_returns = cumulative_returns.dropna()
     overall_profit = (cumulative_returns.iloc[-1] - 1) * 100
     return overall_profit
-# Entry and Exit Conditions - Z-score Method
+
+
 entry_threshold = 0.6
 exit_threshold = 0.25
 profit_ETHBTC = backtest("btc", "eth", "Close").round(2)
