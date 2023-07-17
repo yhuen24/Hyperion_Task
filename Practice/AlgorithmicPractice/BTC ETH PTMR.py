@@ -25,7 +25,7 @@ def scatter_plot(asset1, asset2):
 
 frames["btc"] = create_frame("BTC-USD", "2018-01-01", "2023-06-30")
 frames["eth"] = create_frame("ETH-USD", "2018-01-01", "2023-06-30")
-
+print(frames["btc"])
 # Data Cleaning
 for frame in frames:
     del frames[frame]["Dividends"]
@@ -54,17 +54,17 @@ def entry_exit_conditions(asset1, asset2, entry_threshold, exit_threshold, colum
 
     # Long ass1 and short ass2 when ass1 price is below the lower Bollinger Band and ass2 price is above the upper Bollinger Band
     signals[(asset1_close < asset1_sma - entry_threshold * asset1_std) & (
-                asset2_close > asset2_sma + entry_threshold * asset2_std)] = 1
+            asset2_close > asset2_sma + entry_threshold * asset2_std)] = 1
 
     # Short as11 and long ass2 when ass1 price is above the upper Bollinger Band and ass2 price is below the lower Bollinger Band
     signals[(asset1_close > asset1_sma + entry_threshold * asset1_std) & (
-                asset2_close < asset2_sma - entry_threshold * asset2_std)] = -1
+            asset2_close < asset2_sma - entry_threshold * asset2_std)] = -1
 
     # Exit signals when BTC and ETH prices move back within the exit_threshold range of their respective means
     exit_condition = (asset1_close >= asset1_sma - exit_threshold * asset1_std) & (
-                asset1_close <= asset1_sma + exit_threshold * asset1_std) & \
+            asset1_close <= asset1_sma + exit_threshold * asset1_std) & \
                      (asset2_close >= asset2_sma - exit_threshold * asset2_std) & (
-                                 asset2_close <= asset2_sma + exit_threshold * asset2_std)
+                             asset2_close <= asset2_sma + exit_threshold * asset2_std)
     signals[exit_condition] = 0
 
     return signals
@@ -101,12 +101,11 @@ def backtest(asset1, asset2, column):
     daily_returns = calculate_daily_returns(asset1, asset2, signals, column)
     cumulative_returns = (1 + daily_returns).cumprod()
     cumulative_returns = cumulative_returns.drop(cumulative_returns.index[-1])
-    print(cumulative_returns.tail())
     overall_profit = (cumulative_returns.iloc[-1] - 1) * 100
     return overall_profit
 
 
 entry_threshold = 0.6
-exit_threshold = 0.25
+exit_threshold = 0.5
 profit_ETHBTC = backtest("btc", "eth", "Close").round(2)
 print(f"BTC to ETH Overall profit: {profit_ETHBTC}%")
