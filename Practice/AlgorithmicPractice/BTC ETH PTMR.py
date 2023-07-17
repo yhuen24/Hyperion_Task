@@ -35,42 +35,42 @@ def calculate_correlation(asset1, asset2, column):
     return eth_close.corr(btc_close)
 
 def entry_exit_conditions(asset1, asset2, entry_threshold, exit_threshold, column):
-    btc_close = frames[asset1][column]
-    eth_close = frames[asset2][column]
+    asset1_close = frames[asset1][column]
+    asset2_close = frames[asset2][column]
 
     # Calculate Bollinger Bands
-    window = 20  # Adjust this value for your desired window size
-    btc_sma = btc_close.rolling(window=window, min_periods=1).mean()
-    btc_std = btc_close.rolling(window=window, min_periods=1).std()
-    eth_sma = eth_close.rolling(window=window, min_periods=1).mean()
-    eth_std = eth_close.rolling(window=window, min_periods=1).std()
+    window = 21  # Moving Average Time Frame
+    asset1_sma = asset1_close.rolling(window=window, min_periods=1).mean()
+    asset1_std = asset1_close.rolling(window=window, min_periods=1).std()
+    asset2_sma = asset2_close.rolling(window=window, min_periods=1).mean()
+    asset2_std = asset2_close.rolling(window=window, min_periods=1).std()
 
     # Generate trading signals
-    signals = pd.Series(0, index=btc_close.index)
+    signals = pd.Series(0, index=asset1_close.index)
 
-    # Long BTC and short ETH when BTC price is below the lower Bollinger Band and ETH price is above the upper Bollinger Band
-    signals[(btc_close < btc_sma - entry_threshold * btc_std) & (eth_close > eth_sma + entry_threshold * eth_std)] = 1
+    # Long ass1 and short ass2 when ass1 price is below the lower Bollinger Band and ass2 price is above the upper Bollinger Band
+    signals[(asset1_close < asset1_sma - entry_threshold * asset1_std) & (asset2_close > asset2_sma + entry_threshold * asset2_std)] = 1
 
-    # Short BTC and long ETH when BTC price is above the upper Bollinger Band and ETH price is below the lower Bollinger Band
-    signals[(btc_close > btc_sma + entry_threshold * btc_std) & (eth_close < eth_sma - entry_threshold * eth_std)] = -1
+    # Short as11 and long ass2 when ass1 price is above the upper Bollinger Band and ass2 price is below the lower Bollinger Band
+    signals[(asset1_close > asset1_sma + entry_threshold * asset1_std) & (asset2_close < asset2_sma - entry_threshold * asset2_std)] = -1
 
     # Exit signals when BTC and ETH prices move back within the exit_threshold range of their respective means
-    exit_condition = (btc_close >= btc_sma - exit_threshold * btc_std) & (btc_close <= btc_sma + exit_threshold * btc_std) & \
-                     (eth_close >= eth_sma - exit_threshold * eth_std) & (eth_close <= eth_sma + exit_threshold * eth_std)
+    exit_condition = (asset1_close >= asset1_sma - exit_threshold * asset1_std) & (asset1_close <= asset1_sma + exit_threshold * asset1_std) & \
+                     (asset2_close >= asset2_sma - exit_threshold * asset2_std) & (asset2_close <= asset2_sma + exit_threshold * asset2_std)
     signals[exit_condition] = 0
 
     return signals
 
 
 def calculate_daily_returns(asset1, asset2, signals, column):
-    btc_close = frames[asset1][column]
-    eth_close = frames[asset2][column]
+    asset1_close = frames[asset1][column]
+    asset2_close = frames[asset2][column]
 
     # Ensure all variables are Pandas Series or DataFrames
-    signals = pd.Series(signals, index=btc_close.index)  # Convert signals to a Pandas Series
-    btc_returns = btc_close.pct_change().shift(-1)
-    eth_returns = eth_close.pct_change().shift(-1)
-    daily_returns = signals * (btc_returns - eth_returns)
+    signals = pd.Series(signals, index=asset1_close.index)  # Convert signals to a Pandas Series
+    asset1_returns = asset1_close.pct_change().shift(-1)
+    asset2_returns = asset2_close.pct_change().shift(-1)
+    daily_returns = signals * (asset1_returns - asset2_returns)
 
     # Count total number of trades
     total_trades = (signals != 0).sum()
@@ -90,12 +90,16 @@ def plot_cumulative_returns(cumulative_returns):
     plt.grid(True)
     plt.show()
 
+def backtest(asset1, asset2, column):
+    signals = entry_exit_conditions(asset1, asset2, entry_threshold, exit_threshold, column)
+    daily_returns = calculate_daily_returns(asset1, asset2, signals, column)
+    cumulative_returns = (1 + daily_returns).cumprod()
+    cumulative_returns = cumulative_returns.dropna()
+    overall_profit = (cumulative_returns.iloc[-1] - 1) * 100
+    return overall_profit
 # Entry and Exit Conditions - Z-score Method
 entry_threshold = 0.6
-exit_threshold = 0.22
+exit_threshold = 0.25
+profit_ETHBTC = backtest("btc", "eth", "Close").round(2)
+print(f"BTC to ETH Overall profit: {profit_ETHBTC}%")
 
-signals = entry_exit_conditions("btc", "eth", entry_threshold, exit_threshold, "Close")
-daily_returns = calculate_daily_returns("btc", "eth", signals, "Close")
-cumulative_returns = (1 + daily_returns).cumprod()
-daily_returns_percent = daily_returns.sum() * 100
-print(f"Overall profit: {daily_returns_percent.round(2)} %")
