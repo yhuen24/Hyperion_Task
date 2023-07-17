@@ -100,7 +100,8 @@ def backtest(asset1, asset2, column):
     signals = entry_exit_conditions(asset1, asset2, entry_threshold, exit_threshold, column)
     daily_returns = calculate_daily_returns(asset1, asset2, signals, column)
     cumulative_returns = (1 + daily_returns).cumprod()
-    cumulative_returns = cumulative_returns.dropna()
+    cumulative_returns = cumulative_returns.drop(cumulative_returns.index[-1])
+    print(cumulative_returns.tail())
     overall_profit = (cumulative_returns.iloc[-1] - 1) * 100
     return overall_profit
 
