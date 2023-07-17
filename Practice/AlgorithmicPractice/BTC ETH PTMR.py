@@ -70,14 +70,10 @@ def calculate_daily_returns(asset1, asset2, signals, column):
     asset1_returns = asset1_close.pct_change().shift(-1)
     asset2_returns = asset2_close.pct_change().shift(-1)
     daily_returns = signals * (asset1_returns - asset2_returns)
-
-    # Count total number of trades
     total_trades = (signals != 0).sum()
-
     print("Total Number of Trades:", total_trades)
 
     return daily_returns
-
 
 def plot_cumulative_returns(cumulative_returns):
     plt.figure(figsize=(10, 6))
