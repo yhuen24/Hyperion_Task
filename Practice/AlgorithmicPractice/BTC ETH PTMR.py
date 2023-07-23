@@ -2,7 +2,7 @@
 # Mean Reversion Strategy Simulator using Pairs Trading of 2 securities
 import pandas as pd
 import yfinance as yf
-# import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 # import seaborn as sns
 import sys
 
@@ -43,7 +43,7 @@ class MeanReversionSimulator:
             self.main_menu()
         elif option == "5":
             # Code for Chart Visualization
-            print("Charts Not Available Yet")
+            self.plot_bollinger_bands()
             self.main_menu()
         elif option == "6":
             # Code for going back to Main Menu
@@ -134,6 +134,32 @@ class MeanReversionSimulator:
 
         return daily_returns
 
+    def plot_bollinger_bands(self):
+        asset1_sma = self.securities[self.asset1].rolling(window=self.time_frame, min_periods=1).mean()
+        asset1_std = self.securities[self.asset1].rolling(window=self.time_frame, min_periods=1).std()
+        asset2_sma = self.securities[self.asset2].rolling(window=self.time_frame, min_periods=1).mean()
+        asset2_std = self.securities[self.asset2].rolling(window=self.time_frame, min_periods=1).std()
+
+
+        plt.figure(figsize=(12, 6))
+        plt.plot(self.securities[self.asset1].index, self.securities[self.asset1], label=self.asset1, color="blue")
+        plt.plot(self.securities[self.asset2].index, self.securities[self.asset2], label=self.asset2, color="green")
+        plt.plot(self.securities[self.asset1].index, asset1_sma, label="SMA " + self.asset1, color="orange")
+        plt.plot(self.securities[self.asset2].index, asset2_sma, label="SMA " + self.asset2, color="red")
+        plt.fill_between(self.securities[self.asset1].index, asset1_sma - 2 * asset1_std, asset1_sma + 2 * asset1_std,
+                         alpha=0.2, color="gray")
+        plt.fill_between(self.securities[self.asset2].index, asset2_sma - 2 * asset2_std, asset2_sma + 2 * asset2_std,
+                         alpha=0.2, color="gray")
+        plt.fill_between(self.securities[self.asset1].index, asset1_sma - 2 * asset1_std, asset1_sma + 2 * asset1_std,
+                         alpha=0.2, color="gray", label="Bollinger Bands " + self.asset1)
+        plt.fill_between(self.securities[self.asset2].index, asset2_sma - 2 * asset2_std, asset2_sma + 2 * asset2_std,
+                         alpha=0.2, color="gray", label="Bollinger Bands " + self.asset2)
+        plt.title("Bollinger Bands")
+        plt.xlabel("Date")
+        plt.ylabel("Price")
+        plt.legend()
+        plt.grid(True)
+        plt.show()
 
 if __name__ == "__main__":
     simulator = MeanReversionSimulator()
